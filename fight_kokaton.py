@@ -57,7 +57,7 @@ class Bird:
         self.img = __class__.imgs[(+5, 0)]
         self.rct: pg.Rect = self.img.get_rect()
         self.rct.center = xy
-        self.dire = (+5, 0)
+        self.dire = (+5, 0) #こうかとんの初期の向き（右）を記憶する変数を追加
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -83,9 +83,11 @@ class Bird:
         if check_bound(self.rct) != (True, True):
             self.rct.move_ip(-sum_mv[0], -sum_mv[1])
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
-                self.dire = tuple(sum_mv)
+                self.dire = tuple(sum_mv) #移動した方向を更新して記憶する
                 self.img = __class__.imgs[self.dire]
         screen.blit(self.img, self.rct)
+
+
 class Beam:
     """
     こうかとんが放つビームに関するクラス
@@ -95,7 +97,7 @@ class Beam:
         ビーム画像Surfaceを生成する
         引数 bird：ビームを放つこうかとん（Birdインスタンス）
         """
-        self.vx, self.vy = bird.dire
+        self.vx, self.vy = bird.dire #こうかとんの向きをビームの速度に設定
 
         angle = math.degrees(math.atan2(-self.vy, self.vx))
         self.img = pg.transform.rotozoom(pg.image.load("fig/beam.png"), angle, 1.0)
@@ -145,6 +147,7 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+
 class Score:
     """
     スコアに関するクラス
@@ -160,6 +163,7 @@ class Score:
     def update(self, screen: pg.Surface):
         self.img = self.fonto.render(f"Score: {self.value}", True, self.color)
         screen.blit(self.img, self.rct)
+
 
 class Explosion:
     """
